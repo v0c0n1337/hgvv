@@ -1,0 +1,1191 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doğum Günün Kutlu Olsun 🌙💙</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       Reset + Theme
+    ========================================================== */
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    :root{
+      /* Gece mavisi / lacivert tema */
+      --bg0:#02061a;
+      --bg1:#071235;
+      --bg2:#081a4a;
+
+      --ink:#eaf2ff;
+      --muted:rgba(234,242,255,.72);
+
+      /* Romantik gece paleti */
+      --deepBlue:#0b1c56;
+      --nightBlue:#0b2a7a;
+      --moon:#cfe6ff;
+
+      --lily1:#d8f0ff;
+      --lily2:#9be0ff;
+      --lily3:#b69cff;
+
+      --petal1:#6dd6ff;
+      --petal2:#ff86d8;
+      --petal3:#ffd4f0;
+
+      --gold:#ffd66b;
+
+      /* Glass / glow */
+      --glass:rgba(255,255,255,.06);
+      --glass2:rgba(255,255,255,.10);
+      --stroke:rgba(155,224,255,.28);
+      --shadow:rgba(155,224,255,.25);
+
+      /* Motion */
+      --ease:cubic-bezier(.2,.9,.2,1);
+    }
+
+    body{
+      min-height:100vh;
+      font-family: "Playfair Display","Georgia",serif;
+      color:var(--ink);
+      overflow-x:hidden;
+      cursor:none; /* özel cursor */
+      background:
+        radial-gradient(1100px 650px at 15% 10%, rgba(155,224,255,.18), transparent 60%),
+        radial-gradient(950px 650px at 85% 75%, rgba(182,156,255,.14), transparent 55%),
+        radial-gradient(740px 520px at 50% 55%, rgba(255,134,216,.08), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    /* =========================================================
+       Cursor
+    ========================================================== */
+    #cMain, #cRing{
+      position:fixed; left:0; top:0;
+      pointer-events:none;
+      z-index:99999;
+      transform:translate(-50%,-50%);
+      mix-blend-mode:screen;
+    }
+    #cMain{
+      width:12px; height:12px; border-radius:50%;
+      background: radial-gradient(circle, rgba(255,255,255,.98) 0%, rgba(155,224,255,.95) 55%, transparent 100%);
+      box-shadow:
+        0 0 10px rgba(155,224,255,.95),
+        0 0 26px rgba(155,224,255,.35),
+        0 0 60px rgba(182,156,255,.25);
+      transition:transform .08s;
+    }
+    #cRing{
+      width:44px; height:44px; border-radius:50%;
+      border:1.5px solid rgba(155,224,255,.55);
+      opacity:.95;
+      transition:transform .12s, border-color .12s;
+    }
+
+    /* =========================================================
+       Aurora + Stars + Soft fog
+    ========================================================== */
+    .aurora{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .ab{
+      position:absolute;
+      width:72vw; height:55vh;
+      border-radius:50%;
+      filter:blur(95px);
+      opacity:.16;
+      animation:drift var(--d, 14s) ease-in-out infinite alternate;
+      background: radial-gradient(ellipse, rgba(155,224,255,.85), transparent 60%);
+      mix-blend-mode:screen;
+    }
+    .ab:nth-child(1){ top:-12%; left:-14%; --d:14s; background: radial-gradient(ellipse, rgba(155,224,255,.9), transparent 62%); }
+    .ab:nth-child(2){ top:18%; right:-14%; --d:9.5s; opacity:.12; background: radial-gradient(ellipse, rgba(182,156,255,.9), transparent 62%); animation-delay:-4.2s; }
+    .ab:nth-child(3){ bottom:-14%; left:10%; --d:16.5s; opacity:.10; background: radial-gradient(ellipse, rgba(255,134,216,.85), transparent 62%); animation-delay:-9.1s; }
+    .ab:nth-child(4){ bottom:14%; right:4%; --d:11.2s; opacity:.09; background: radial-gradient(ellipse, rgba(155,224,255,.95), transparent 62%); animation-delay:-2.3s; }
+
+    @keyframes drift{
+      from{ transform:translate(0,0) scale(1); opacity:.10; }
+      to{ transform:translate(5vw,5vh) scale(1.18); opacity:.22; }
+    }
+
+    .stars{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+    }
+    .star{
+      position:absolute;
+      background:#fff;
+      border-radius:50%;
+      width:var(--s,2px);
+      height:var(--s,2px);
+      left:var(--x,50%);
+      top:var(--y,50%);
+      opacity:.7;
+      box-shadow:0 0 6px rgba(155,224,255,.18);
+      animation:twinkle var(--d, 3s) var(--dl, 0s) infinite alternate;
+      background:var(--c,#fff);
+    }
+    @keyframes twinkle{
+      0%{ opacity:.05; transform:scale(.7); }
+      100%{ opacity:1; transform:scale(1.55); }
+    }
+
+    /* =========================================================
+       Lilies background (SVG)
+    ========================================================== */
+    .lilies-bg{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:1;
+      overflow:hidden;
+      opacity:.95;
+    }
+    .lily{
+      position:absolute;
+      width:92px; height:220px;
+      left:var(--x, 50%);
+      top:var(--y, 62%);
+      transform:translate(-50%,-50%) rotate(var(--r,0deg)) scale(var(--sc,1));
+      opacity:var(--o,.65);
+      animation:lilySway var(--t, 6s) ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(155,224,255,.14)) drop-shadow(0 0 30px rgba(182,156,255,.10));
+    }
+    @keyframes lilySway{
+      from{ transform:translate(-50%,-50%) rotate(var(--r,0deg)) translateY(0) scale(var(--sc,1)); opacity:var(--o,.55); }
+      to{ transform:translate(-50%,-50%) rotate(calc(var(--r,0deg) + 7deg)) translateY(-14px) scale(calc(var(--sc,1) * 1.04)); opacity:min(1, calc(var(--o,.65) + .12)); }
+    }
+    .lily svg{ width:100%; height:100%; display:block; }
+
+    /* =========================================================
+       Layout
+    ========================================================== */
+    .wrap{
+      position:relative;
+      z-index:2;
+      padding:44px 16px 100px;
+      max-width:1040px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+    }
+
+    /* =========================================================
+       Marquee
+    ========================================================== */
+    .mq{
+      width:100%;
+      overflow:hidden;
+      mask-image:linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+      -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+      margin: 4px 0 10px;
+    }
+    .mq .track{
+      width:max-content;
+      display:flex;
+      gap:44px;
+      animation:mqScroll 22s linear infinite;
+      padding: 8px 10px;
+      white-space:nowrap;
+    }
+    @keyframes mqScroll{
+      0%{ transform:translateX(0); }
+      100%{ transform:translateX(-50%); }
+    }
+    .mq .item{
+      font-family:"Dancing Script", cursive;
+      letter-spacing:4px;
+      font-size:1.02rem;
+      color:rgba(234,242,255,.72);
+      text-shadow:0 0 16px rgba(155,224,255,.12);
+      user-select:none;
+    }
+
+    /* =========================================================
+       Divider + Title
+    ========================================================== */
+    .divider{
+      display:flex; align-items:center; gap:14px;
+      width:100%;
+      max-width:620px;
+      margin-top:10px;
+    }
+    .dline{
+      flex:1;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(155,224,255,.85), rgba(182,156,255,.75), transparent);
+      opacity:.95;
+    }
+    .dicon{
+      font-size:1.45rem;
+      filter: drop-shadow(0 0 12px rgba(155,224,255,.22));
+      animation:spin 7.2s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .title{
+      font-family:"Dancing Script", cursive;
+      font-size:8.6rem;
+      font-weight:700;
+      letter-spacing:22px;
+      text-align:center;
+      line-height:1;
+      background:
+        linear-gradient(45deg,
+          #ffffff,
+          var(--lily1),
+          var(--petal2),
+          var(--lily3),
+          var(--gold),
+          #a7e7ff,
+          var(--petal2)
+        );
+      background-size:520% 520%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:gradShift 4.2s ease infinite, floaty 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px rgba(155,224,255,.35)) drop-shadow(0 0 55px rgba(182,156,255,.16));
+    }
+    @keyframes gradShift{
+      0%,100%{ background-position:0% 50%; }
+      50%{ background-position:100% 50%; }
+    }
+    @keyframes floaty{
+      0%,100%{ transform:translateY(0) rotateX(0deg); }
+      50%{ transform:translateY(-16px) rotateX(4deg); }
+    }
+
+    .subtitle{
+      margin-top:-6px;
+      font-style:italic;
+      letter-spacing:7px;
+      color:rgba(155,224,255,.70);
+      font-size:.98rem;
+      animation:subFade 3.5s ease-in-out infinite;
+      text-shadow:0 0 22px rgba(155,224,255,.18);
+    }
+    @keyframes subFade{
+      0%,100%{ opacity:.45; }
+      50%{ opacity:1; }
+    }
+
+    /* =========================================================
+       Content Card
+    ========================================================== */
+    .card{
+      width:100%;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.10), rgba(155,224,255,.06));
+      border: 1px solid rgba(155,224,255,.22);
+      border-radius: 28px;
+      padding: 26px 22px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.02) inset,
+        0 24px 90px rgba(0,0,0,.32);
+      animation:breathe 4.6s ease-in-out infinite;
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+    }
+    @keyframes breathe{
+      0%,100%{
+        box-shadow:
+          0 0 32px rgba(155,224,255,.10),
+          inset 0 0 40px rgba(155,224,255,.02),
+          0 24px 90px rgba(0,0,0,.32);
+      }
+      50%{
+        box-shadow:
+          0 0 78px rgba(155,224,255,.20),
+          0 0 160px rgba(182,156,255,.10),
+          inset 0 0 60px rgba(155,224,255,.06),
+          0 24px 90px rgba(0,0,0,.32);
+      }
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(820px 240px at 50% 0%, rgba(155,224,255,.18), transparent 55%),
+        radial-gradient(620px 200px at 10% 75%, rgba(182,156,255,.12), transparent 60%),
+        radial-gradient(420px 160px at 92% 70%, rgba(255,134,216,.10), transparent 62%);
+      pointer-events:none;
+    }
+
+    .msg{
+      color: rgba(234,242,255,.95);
+      font-size:1.15rem;
+      line-height:2.05;
+      font-style:italic;
+      position:relative;
+      z-index:1;
+      text-shadow:0 0 18px rgba(155,224,255,.10);
+    }
+    .msg b{
+      font-style:normal;
+      color:#fff;
+      text-shadow:0 0 20px rgba(155,224,255,.35);
+    }
+    .gold{ color: rgba(255,214,107,.98); font-weight:700; text-shadow:0 0 22px rgba(255,214,107,.18); }
+    .lilyTxt{ color: rgba(220,244,255,.98); font-weight:700; text-shadow:0 0 22px rgba(155,224,255,.22); }
+    .pinkTxt{ color: rgba(255,134,216,.98); font-weight:700; text-shadow:0 0 22px rgba(255,134,216,.16); }
+
+    /* =========================================================
+       Meters
+    ========================================================== */
+    .meters{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      margin-top:8px;
+      position:relative;
+      z-index:1;
+    }
+    .meter-label{
+      font-family:"Dancing Script", cursive;
+      letter-spacing:3px;
+      color:rgba(155,224,255,.78);
+      font-size:1.06rem;
+      text-shadow:0 0 18px rgba(155,224,255,.14);
+    }
+    .meter-track{
+      width:min(460px, 92vw);
+      height:14px;
+      border-radius:999px;
+      border:1px solid rgba(155,224,255,.32);
+      background:rgba(155,224,255,.10);
+      box-shadow: inset 0 0 20px rgba(155,224,255,.06);
+      overflow:hidden;
+    }
+    .meter-fill{
+      height:100%;
+      width:8%;
+      border-radius:999px;
+      background:linear-gradient(90deg, #ffffff, var(--lily2), rgba(255,134,216,.95), var(--lily3), var(--gold));
+      background-size:340% 100%;
+      animation:meterAnim 3.2s ease-in-out forwards;
+      box-shadow:0 0 18px rgba(155,224,255,.28);
+    }
+    @keyframes meterAnim{
+      0%{ width:6%; filter:saturate(1); }
+      60%{ width:78%; }
+      100%{ width:100%; filter:saturate(1.2); }
+    }
+
+    /* =========================================================
+       Buttons
+    ========================================================== */
+    .btnRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:18px;
+      z-index:1;
+      position:relative;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:15px 28px;
+      border-radius:999px;
+      font-family:"Dancing Script", cursive;
+      font-weight:700;
+      letter-spacing:2px;
+      font-size:1.12rem;
+      color:rgba(255,255,255,.98);
+      background:linear-gradient(135deg,
+        rgba(255,255,255,.22),
+        rgba(155,224,255,.95),
+        rgba(182,156,255,.95),
+        rgba(255,134,216,.92)
+      );
+      background-size:260% 260%;
+      animation:gradShift 3.1s ease infinite;
+      box-shadow:0 18px 50px rgba(155,224,255,.22);
+      transition:transform .18s ease, filter .18s ease, box-shadow .18s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::before{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      transform:translateX(-120%);
+      transition:transform .6s ease;
+      pointer-events:none;
+    }
+    .btn:hover{
+      transform:translateY(-4px) scale(1.05);
+      filter:saturate(1.15);
+      box-shadow:0 22px 70px rgba(155,224,255,.35);
+    }
+    .btn:hover::before{ transform:translateX(120%); }
+    .btn:active{ transform:translateY(-1px) scale(.98); }
+
+    .btnGhost{
+      background:rgba(255,255,255,.06);
+      border:1.4px solid rgba(155,224,255,.22);
+      color:rgba(255,255,255,.92);
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+    }
+    .btnGhost::before{
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+    }
+
+    /* =========================================================
+       Petals (confetti particles)
+    ========================================================== */
+    .petal{
+      position:fixed;
+      pointer-events:none;
+      z-index:99999;
+      width:10px; height:10px;
+      border-radius:999px;
+      left:50px; top:50px;
+      opacity:.98;
+      animation:pFade .9s ease-out forwards;
+      box-shadow:0 0 10px rgba(155,224,255,.18);
+    }
+    @keyframes pFade{
+      0%{ opacity:.95; transform:translate(0,0) scale(1); }
+      100%{ opacity:0; transform:translate(var(--dx,0px), var(--dy,-70px)) scale(.22); }
+    }
+
+    /* =========================================================
+       Surprise overlay
+    ========================================================== */
+    .overlay{
+      position:fixed; inset:0;
+      z-index:300;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background: radial-gradient(ellipse at center, rgba(7,18,53,.95), rgba(0,0,0,.98));
+      backdrop-filter: blur(7px);
+    }
+    .overlay.on{ display:flex; animation:ovIn .55s ease; }
+    @keyframes ovIn{
+      from{ opacity:0; transform:scale(.96); }
+      to{ opacity:1; transform:scale(1); }
+    }
+    .ovBox{
+      width:min(760px, 96vw);
+      border-radius:26px;
+      border:1px solid rgba(155,224,255,.24);
+      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(155,224,255,.04));
+      box-shadow:0 30px 120px rgba(0,0,0,.55);
+      padding:26px 18px 20px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .ovBox::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(780px 260px at 50% 0%, rgba(155,224,255,.22), transparent 56%),
+        radial-gradient(560px 220px at 10% 92%, rgba(182,156,255,.16), transparent 56%),
+        radial-gradient(420px 200px at 96% 78%, rgba(255,134,216,.10), transparent 60%);
+      pointer-events:none;
+    }
+
+    .ovLilyLine{
+      position:relative; z-index:1;
+      margin: 6px 0 4px;
+      font-size:2.45rem;
+      animation: floaty 3.6s ease-in-out infinite;
+    }
+    .ovTitle{
+      position:relative; z-index:1;
+      font-family:"Dancing Script", cursive;
+      font-size:4.9rem;
+      letter-spacing:14px;
+      background:linear-gradient(45deg, #fff, var(--lily2), rgba(255,134,216,.92), var(--lily3), var(--gold));
+      background-size:360% 360%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:gradShift 2s ease infinite;
+      filter:drop-shadow(0 0 34px rgba(155,224,255,.35));
+      margin: 6px 0 2px;
+    }
+    .ovSub{
+      position:relative; z-index:1;
+      margin-top:10px;
+      color:rgba(234,242,255,.95);
+      font-style:italic;
+      letter-spacing:4px;
+      font-size:1.35rem;
+      text-shadow:0 0 22px rgba(155,224,255,.30);
+      animation:subFade 2.4s ease-in-out infinite;
+    }
+    .ovMsg{
+      position:relative; z-index:1;
+      margin-top:12px;
+      color:rgba(234,242,255,.88);
+      font-size:1.08rem;
+      line-height:2;
+      font-style:italic;
+    }
+    .closeBtn{
+      margin-top:18px;
+      border-radius:999px;
+      padding:14px 28px;
+      border:1.5px solid rgba(155,224,255,.35);
+      background:rgba(155,224,255,.12);
+      color:rgba(190,235,255,.96);
+      cursor:pointer;
+      font-family:"Dancing Script", cursive;
+      font-weight:700;
+      letter-spacing:2px;
+      font-size:1.1rem;
+      transition:.25s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position:relative;
+      z-index:1;
+    }
+    .closeBtn:hover{
+      background:rgba(155,224,255,.25);
+      color:#fff;
+      box-shadow:0 0 35px rgba(155,224,255,.35);
+      transform:translateY(-3px);
+    }
+
+    /* =========================================================
+       Music Panel
+    ========================================================== */
+    .musicPanel{
+      width:100%;
+      margin-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      z-index:1;
+      position:relative;
+      align-items:center;
+    }
+    .musicTop{
+      width:100%;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .musicLabel{
+      font-family:"Dancing Script", cursive;
+      letter-spacing:3px;
+      color:rgba(155,224,255,.78);
+      font-size:1.02rem;
+      text-shadow:0 0 18px rgba(155,224,255,.10);
+    }
+    .playerRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .fileBtn{
+      border:1.5px solid rgba(155,224,255,.28);
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.92);
+      padding:10px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      font-family:"Dancing Script", cursive;
+      font-weight:700;
+      letter-spacing:1px;
+      transition:.2s ease;
+    }
+    .fileBtn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 0 30px rgba(155,224,255,.16);
+    }
+    .miniBtn{
+      border:none;
+      background:rgba(155,224,255,.14);
+      border:1.5px solid rgba(155,224,255,.26);
+      color:rgba(255,255,255,.96);
+      padding:10px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      font-family:"Dancing Script", cursive;
+      font-weight:700;
+      letter-spacing:1px;
+      transition:.2s ease;
+    }
+    .miniBtn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 0 30px rgba(155,224,255,.22);
+    }
+    .miniBtn:active{ transform:translateY(-1px) scale(.98); }
+
+    .progressWrap{
+      width:min(580px, 92vw);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+    .prog{
+      width:min(430px, 78vw);
+      height:12px;
+      appearance:none;
+      background:rgba(155,224,255,.12);
+      border:1px solid rgba(155,224,255,.26);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .prog::-webkit-slider-thumb{
+      appearance:none;
+      width:18px; height:18px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #fff, var(--petal1), var(--lily3));
+      box-shadow:0 0 18px rgba(155,224,255,.35);
+      border:1px solid rgba(255,255,255,.32);
+      cursor:pointer;
+    }
+    .time{
+      font-size:.98rem;
+      color:rgba(234,242,255,.78);
+      letter-spacing:1px;
+      font-style:italic;
+      min-width:180px;
+      text-align:center;
+    }
+
+    /* =========================================================
+       Responsive + Reduced motion
+    ========================================================== */
+    @media (max-width: 620px){
+      .title{ font-size:4.9rem; letter-spacing:12px; }
+      .ovTitle{ font-size:3.25rem; letter-spacing:10px; }
+      .msg{ font-size:1.03rem; line-height:2.0; }
+      .card{ padding:22px 14px; }
+      .lily{ width:74px; height:175px; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .ab,.star,.lily,.title,.subtitle,.ovSub,.ovLilyLine,.mq .track{ animation:none !important; }
+      .btn, .closeBtn { transition:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cMain"></div>
+  <div id="cRing"></div>
+
+  <!-- Aurora -->
+  <div class="aurora" aria-hidden="true">
+    <div class="ab"></div><div class="ab"></div><div class="ab"></div><div class="ab"></div>
+  </div>
+
+  <!-- Stars -->
+  <div class="stars" id="stars" aria-hidden="true"></div>
+
+  <!-- Lilies -->
+  <div class="lilies-bg" id="lilies" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <!-- Top marquee -->
+    <div class="mq" aria-hidden="true">
+      <div class="track" id="mqTop"></div>
+    </div>
+
+    <!-- Divider + Title -->
+    <div class="divider">
+      <div class="dline"></div>
+      <div class="dicon">🌙</div>
+      <div class="dline"></div>
+    </div>
+
+    <h1 class="title">Doğum Günün Kutlu Olsun Askimm </h1>
+    <div class="subtitle">∙ gece mavisi gibi saf ∙</div>
+
+    <div class="divider">
+      <div class="dline"></div>
+      <div class="dicon">💙</div>
+      <div class="dline"></div>
+    </div>
+
+    <!-- Card -->
+    <section class="card" aria-label="yerim seni">
+      <p class="msg" id="heroMsg">
+        🌷 bebegim <b id="nameTxt">Sena</b> 🌷<br><br>
+        Bugün senin günün…<br>
+        Ve ben, her nefeste biraz daha <span class="pinkTxt">parlayan</span>
+        kalbinin ışığını kutluyorum.<br><br>
+
+        Gecenin en yumuşak mavisinde bile senin güzelliğin daha parlak…
+        Sana, <span class="lilyTxt">zambakların zarafeti</span> kadar ince ve
+        <span class="gold">umut kadar sıcak</span> bir hayat diliyorum. ✨<br><br>
+
+        İyi ki varsın gülüm 
+      </p>
+
+      <div class="meters">
+        <div class="meter-label">🌸 Sena’ya duyduğum sevgi 🌸</div>
+        <div class="meter-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <div class="meter-fill" id="meterFill"></div>
+        </div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn" onclick="openSurprise()">🎁 Sürpriz Aç</button>
+        <button class="btn btnGhost" onclick="burstPetals()"> ne olabilirr</button>
+      </div>
+
+      <!-- Music system -->
+      <div class="musicPanel">
+        <div class="musicTop">
+          <div class="musicLabel">🎧 Şarkı Sistemi (Kendi MP3’ün ile)</div>
+          <div class="musicLabel" style="opacity:.75;font-size:.95rem;">
+            Not: Sarkimizi bilion demi 😡
+          </div>
+        </div>
+
+        <div class="playerRow">
+          <label class="fileBtn" for="musicFile">🎵 Müzik Seç</label>
+          <input id="musicFile" type="file" accept="audio/*" hidden />
+
+          <button class="miniBtn" id="playBtn" onclick="togglePlay()">▶️ Çal / Durdur</button>
+          <button class="miniBtn" onclick="stopMusic()">⏹️ Durdur</button>
+          <button class="miniBtn" onclick="replay()">🔁 Baştan</button>
+        </div>
+
+        <div class="progressWrap">
+          <input id="prog" class="prog" type="range" min="0" max="1000" value="0" oninput="seekBySlider()" />
+          <div class="time" id="timeTxt">00:00 / 00:00</div>
+        </div>
+
+        <audio id="audio" preload="none"></audio>
+      </div>
+    </section>
+
+    <!-- Bottom marquee -->
+    <div class="mq" aria-hidden="true" style="margin-top:6px;">
+      <div class="track" id="mqBot"></div>
+    </div>
+  </div>
+
+  <!-- Surprise Overlay -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Sürpriz">
+    <div class="ovBox">
+      <div class="ovLilyLine">🌸 &nbsp; 🪻 &nbsp; 🌸</div>
+      <div class="ovTitle" id="ovTitle">Sena</div>
+      <div class="ovSub">seni seviyorum</div>
+
+      <div class="ovMsg">
+        Sena…<br>
+        Bugün ve her gün…<br>
+        Kalbin kadar yumuşak, bakışların kadar aydınlık,
+        adımların kadar güçlü ol. ✨💙
+      </div>
+
+      <button class="closeBtn" onclick="closeSurprise()">💕 Teşekkürler 💕</button>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       Cursor logic
+    ========================================================== */
+    const cM = document.getElementById('cMain');
+    const cR = document.getElementById('cRing');
+
+    let mx = -200, my = -200, rx = -200, ry = -200;
+
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      cM.style.left = mx + 'px';
+      cM.style.top  = my + 'px';
+      spawnPetalDot(mx, my);
+    });
+
+    (function loop(){
+      rx += (mx - rx) * .14;
+      ry += (my - ry) * .14;
+      cR.style.left = rx + 'px';
+      cR.style.top  = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+    document.addEventListener('mousedown', () => {
+      cM.style.transform = 'translate(-50%,-50%) scale(2.0)';
+      cR.style.transform = 'translate(-50%,-50%) scale(.56)';
+      cR.style.borderColor = 'rgba(155,224,255,.85)';
+    });
+    document.addEventListener('mouseup', () => {
+      cM.style.transform = 'translate(-50%,-50%) scale(1)';
+      cR.style.transform = 'translate(-50%,-50%) scale(1)';
+      cR.style.borderColor = 'rgba(155,224,255,.55)';
+    });
+
+    /* =========================================================
+       Stars
+    ========================================================== */
+    const starsEl = document.getElementById('stars');
+    const starColors = ['#ffffff', '#d8f0ff', '#b69cff', '#9be0ff', '#ffd66b', '#cfe6ff'];
+
+    for(let i=0;i<290;i++){
+      const s = document.createElement('div');
+      const sz = Math.random()*2.6 + 0.7;
+      const x = Math.random()*100;
+      const y = Math.random()*100;
+      const d = (Math.random()*3.2 + 1.7).toFixed(2);
+      const dl = (-Math.random()*6).toFixed(2);
+      const c = starColors[(Math.random()*starColors.length)|0];
+
+      s.className = 'star';
+      s.style.cssText =
+        `--s:${sz}px;--x:${x}%;--y:${y}%;--d:${d}s;--dl:${dl}s;--c:${c};`;
+      if(Math.random() > 0.78){
+        s.style.opacity = '.95';
+        s.style.boxShadow = `0 0 14px ${c}`;
+      }
+      starsEl.appendChild(s);
+    }
+
+    /* =========================================================
+       Lilies SVG generator (no external assets)
+    ========================================================== */
+    const lilies = document.getElementById('lilies');
+
+    function lilySVG(){
+      return `
+        <svg viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="petalG" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="${'#ffffff'}"/>
+              <stop offset="42%" stop-color="${'#d8f0ff'}"/>
+              <stop offset="72%" stop-color="${'#9be0ff'}"/>
+              <stop offset="100%" stop-color="${'#b69cff'}"/>
+            </linearGradient>
+            <linearGradient id="stemG" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="${'#6dd6ff'}"/>
+              <stop offset="100%" stop-color="${'#1c7fb8'}"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Stem -->
+          <path d="M60 230 C54 170 55 132 58 100 C60 78 55 62 49 42"
+                fill="none" stroke="url(#stemG)" stroke-width="5.2" stroke-linecap="round"/>
+          <path d="M60 230 C66 170 65 132 62 100 C60 78 65 62 71 42"
+                fill="none" stroke="url(#stemG)" stroke-width="5.2" stroke-linecap="round"/>
+
+          <!-- Leaves -->
+          <path d="M33 142 C42 124 58 124 68 136 C55 158 42 160 33 142 Z"
+                fill="rgba(40,150,180,.46)" opacity=".9"/>
+          <path d="M87 142 C78 124 62 124 52 136 C65 158 78 160 87 142 Z"
+                fill="rgba(40,150,180,.34)" opacity=".9"/>
+
+          <!-- Flower head -->
+          <g>
+            <ellipse cx="60" cy="70" rx="16" ry="10" fill="rgba(255,214,107,.14)"/>
+            <path d="M60 40
+                     C44 50 36 72 45 92
+                     C53 110 67 110 75 92
+                     C84 72 76 50 60 40 Z"
+                  fill="url(#petalG)" stroke="rgba(155,224,255,.25)" stroke-width="2"/>
+
+            <!-- Inner spots -->
+            <path d="M60 52 C52 62 51 75 58 83 C60 86 62 86 64 83 C71 75 70 62 60 52 Z"
+                  fill="rgba(155,224,255,.28)"/>
+            <circle cx="60" cy="73" r="4.3" fill="rgba(155,224,255,.35)"/>
+            <circle cx="50" cy="76" r="2.8" fill="rgba(255,134,216,.26)"/>
+            <circle cx="70" cy="76" r="2.8" fill="rgba(255,134,216,.26)"/>
+
+            <!-- Petal lines -->
+            <path d="M50 88 C56 76 58 65 60 55"
+                  fill="none" stroke="rgba(182,156,255,.35)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M70 88 C64 76 62 65 60 55"
+                  fill="none" stroke="rgba(182,156,255,.35)" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- Base bud -->
+          <path d="M50 108 C55 98 65 98 70 108 C65 120 55 120 50 108 Z"
+                fill="rgba(255,255,255,.30)" stroke="rgba(155,224,255,.18)" stroke-width="1.5"/>
+        </svg>
+      `;
+    }
+
+    const lilyCount = 10;
+    for(let i=0;i<lilyCount;i++){
+      const d = document.createElement('div');
+      d.className = 'lily';
+
+      const x = Math.random()*100;
+      const y = 30 + Math.random()*58;
+      const r = (Math.random()*22 - 11).toFixed(1) + 'deg';
+      const sc = (0.76 + Math.random()*0.55).toFixed(2);
+      const o = (0.35 + Math.random()*0.60).toFixed(2);
+      const t = (5.5 + Math.random()*6.2).toFixed(2) + 's';
+
+      d.style.cssText = `--x:${x}%;--y:${y}%;--r:${r};--sc:${sc};--o:${o};--t:${t};`;
+      d.innerHTML = lilySVG();
+      lilies.appendChild(d);
+    }
+
+    /* =========================================================
+       Marquee content
+    ========================================================== */
+    const MQ = [
+      'hayatimin anlamisin', '🪻 zambak gibi zarif 🪻', '😽 iyi ki varsın 😽',
+      '✨ gece bile güzelliğine şahit ✨', ' seni seviyorum ', ' ay ışığı kadar nazik '
+    ];
+
+    function buildMQ(id){
+      const track = document.getElementById(id);
+      if(!track) return;
+      const list = [...MQ, ...MQ, ...MQ];
+      track.innerHTML = '';
+      list.forEach(t=>{
+        const sp = document.createElement('span');
+        sp.className = 'item';
+        sp.textContent = t;
+        track.appendChild(sp);
+      });
+    }
+    buildMQ('mqTop');
+    buildMQ('mqBot');
+
+    /* =========================================================
+       Petal system
+    ========================================================== */
+    const petalColors = ['#ffffff','#d8f0ff','#9be0ff','#b69cff','#ffd66b','#ff86d8','#cfe6ff'];
+
+    function spawnPetalDot(x, y){
+      if(Math.random() > 0.84) return;
+
+      const el = document.createElement('div');
+      el.className = 'petal';
+
+      const c = petalColors[(Math.random()*petalColors.length)|0];
+      const s = Math.random()*10 + 6;
+      const dx = (Math.random() - 0.5) * 120;
+      const dy = - (Math.random()*80 + 22);
+
+      el.style.width = s + 'px';
+      el.style.height = (s*0.72) + 'px';
+      el.style.background = c;
+
+      el.style.left = x + 'px';
+      el.style.top  = y + 'px';
+      el.style.setProperty('--dx', dx.toFixed(1) + 'px');
+      el.style.setProperty('--dy', dy.toFixed(1) + 'px');
+
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), 900);
+    }
+
+    function burstPetals(){
+      const cx = window.innerWidth/2;
+      const cy = Math.max(240, window.innerHeight * 0.52);
+
+      for(let i=0;i<125;i++){
+        const el = document.createElement('div');
+        el.className = 'petal';
+
+        const c = petalColors[(Math.random()*petalColors.length)|0];
+        const s = Math.random()*10 + 6.2;
+        const dx = (Math.random() - 0.5) * 460;
+        const dy = - (Math.random()*290 + 120);
+        const rot = (Math.random()*360).toFixed(0);
+
+        el.style.width = s + 'px';
+        el.style.height = (s*0.66) + 'px';
+        el.style.background = c;
+
+        el.style.left = (cx + (Math.random()-0.5)*90) + 'px';
+        el.style.top  = (cy + (Math.random()-0.5)*60) + 'px';
+        el.style.transform = `rotate(${rot}deg)`;
+
+        el.style.setProperty('--dx', dx.toFixed(1) + 'px');
+        el.style.setProperty('--dy', dy.toFixed(1) + 'px');
+        el.style.boxShadow = `0 0 16px rgba(155,224,255,.22)`;
+
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 970);
+      }
+    }
+
+    /* =========================================================
+       Surprise Overlay
+    ========================================================== */
+    const overlay = document.getElementById('overlay');
+    let overlayOn = false;
+
+    function openSurprise(){
+      if(overlayOn) return;
+      overlayOn = true;
+      overlay.classList.add('on');
+
+      setTimeout(()=> burstPetals(), 120);
+
+      setTimeout(()=> {
+        for(let i=0;i<95;i++){
+          const el = document.createElement('div');
+          el.className = 'petal';
+
+          const c = petalColors[(Math.random()*petalColors.length)|0];
+          const s = Math.random()*9 + 6;
+
+          const dx = (Math.random() - 0.5) * 560;
+          const dy = - (Math.random()*360 + 130);
+
+          el.style.width = s + 'px';
+          el.style.height = (s*0.68) + 'px';
+          el.style.background = c;
+
+          el.style.left = (window.innerWidth/2 + (Math.random()-0.5)*120) + 'px';
+          el.style.top  = (window.innerHeight*0.30 + (Math.random()-0.5)*70) + 'px';
+          el.style.setProperty('--dx', dx.toFixed(1) + 'px');
+          el.style.setProperty('--dy', dy.toFixed(1) + 'px');
+
+          document.body.appendChild(el);
+          setTimeout(()=> el.remove(), 980);
+        }
+      }, 280);
+    }
+
+    function closeSurprise(){
+      overlayOn = false;
+      overlay.classList.remove('on');
+    }
+
+    overlay.addEventListener('click', (e)=>{
+      if(e.target === overlay) closeSurprise();
+    });
+
+    /* =========================================================
+       Music player
+    ========================================================== */
+    const audio = document.getElementById('audio');
+    const fileInput = document.getElementById('musicFile');
+    const prog = document.getElementById('prog');
+    const timeTxt = document.getElementById('timeTxt');
+    const playBtn = document.getElementById('playBtn');
+
+    let raf = null;
+
+    function formatTime(t){
+      if(!isFinite(t) || t < 0) return '00:00';
+      const m = Math.floor(t/60);
+      const s = Math.floor(t%60);
+      return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+
+    function updateUI(){
+      if(!audio.duration){
+        timeTxt.textContent = '00:00 / 00:00';
+        return;
+      }
+      const cur = audio.currentTime || 0;
+      const dur = audio.duration || 0;
+      timeTxt.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+      const v = (cur / dur) * 1000;
+      prog.value = isFinite(v) ? v : 0;
+      raf = requestAnimationFrame(updateUI);
+    }
+
+    function togglePlay(){
+      if(!audio.src){
+        fileInput.click();
+        return;
+      }
+      if(audio.paused){
+        audio.play().catch(()=>{});
+      }else{
+        audio.pause();
+      }
+    }
+
+    function stopMusic(){
+      audio.pause();
+      audio.currentTime = 0;
+      prog.value = 0;
+      timeTxt.textContent = `00:00 / ${audio.duration ? formatTime(audio.duration) : '00:00'}`;
+    }
+
+    function replay(){
+      if(!audio.src) return;
+      audio.currentTime = 0;
+      audio.play().catch(()=>{});
+    }
+
+    fileInput.addEventListener('change', ()=>{
+      const file = fileInput.files && fileInput.files[0];
+      if(!file) return;
+
+      const url = URL.createObjectURL(file);
+      audio.src = url;
+      audio.load();
+
+      audio.play().then(()=>{
+        if(!raf) raf = requestAnimationFrame(updateUI);
+      }).catch(()=>{ /* user gesture required */ });
+    });
+
+    function seekBySlider(){
+      if(!audio.duration) return;
+      const ratio = Number(prog.value) / 1000;
+      audio.currentTime = audio.duration * ratio;
+    }
+
+    audio.addEventListener('play', ()=>{
+      if(!raf) raf = requestAnimationFrame(updateUI);
+    });
+    audio.addEventListener('pause', ()=>{
+      if(raf){ cancelAnimationFrame(raf); raf = null; }
+    });
+    audio.addEventListener('ended', ()=>{
+      playBtn.textContent = '▶️ Tekrar Çal';
+    });
+
+    /* =========================================================
+       Keyboard easter egg: "sena" / "lily"
+    ========================================================== */
+    let typed = '';
+    document.addEventListener('keydown', (e)=>{
+      const k = e.key.toLowerCase();
+      if(k.length !== 1) return;
+      typed += k;
+      if(typed.length > 12) typed = typed.slice(-12);
+
+      if(typed.includes('lily') || typed.includes('sena')){
+        openSurprise();
+        typed = '';
+      }
+    });
+
+    /* =========================================================
+       Gentle initial sprinkle
+    ========================================================== */
+    setTimeout(()=> burstPetals(), 650);
+  </script>
+</body>
+</html>
